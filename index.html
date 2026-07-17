@@ -15,6 +15,7 @@
       --line: rgba(23, 26, 24, .10);
       --accent: #ff5a2d;
       --accent-dark: #e6451b;
+      --accent-surface: #d83d16;
       --green: #214f3a;
       --green-soft: #dfeee5;
       --yellow: #ffe8a4;
@@ -70,6 +71,8 @@
     }
 
     h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { text-wrap: balance; }
+    main section[id] { scroll-margin-top: 98px; }
     h1 {
       max-width: 640px;
       margin-bottom: 24px;
@@ -141,6 +144,54 @@
     }
     .nav-links a:hover { color: var(--ink); }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .mobile-toggle,
+    .mobile-menu { display: none; }
+    .mobile-toggle {
+      place-items: center;
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      margin-left: auto;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: var(--ink);
+      background: rgba(255,255,255,.76);
+      cursor: pointer;
+    }
+    .mobile-toggle__icon,
+    .mobile-toggle__icon::before,
+    .mobile-toggle__icon::after {
+      display: block;
+      width: 20px;
+      height: 2px;
+      border-radius: 99px;
+      background: currentColor;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .mobile-toggle__icon { position: relative; }
+    .mobile-toggle__icon::before,
+    .mobile-toggle__icon::after { content: ""; position: absolute; left: 0; }
+    .mobile-toggle__icon::before { top: -6px; }
+    .mobile-toggle__icon::after { top: 6px; }
+    .header.menu-open .mobile-toggle__icon { background: transparent; }
+    .header.menu-open .mobile-toggle__icon::before { top: 0; transform: rotate(45deg); }
+    .header.menu-open .mobile-toggle__icon::after { top: 0; transform: rotate(-45deg); }
+    .mobile-menu__inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 12px 0 16px;
+    }
+    .mobile-menu a {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.8);
+      font-size: 14px;
+      font-weight: 720;
+      text-align: center;
+    }
 
     .btn {
       display: inline-flex;
@@ -491,8 +542,8 @@
     }
     .step {
       position: relative;
-      min-height: 300px;
-      padding: 28px;
+      min-height: 260px;
+      padding: 26px;
       overflow: hidden;
       border-radius: var(--radius-lg);
       background: var(--surface);
@@ -507,7 +558,7 @@
       place-items: center;
       width: 42px;
       height: 42px;
-      margin-bottom: 66px;
+      margin-bottom: 42px;
       border-radius: 14px;
       color: #fff;
       background: var(--accent);
@@ -537,6 +588,11 @@
       background: var(--ink);
       color: #fff;
     }
+    .devices-title {
+      max-width: 560px;
+      font-size: clamp(36px, 3vw, 46px);
+      line-height: 1.03;
+    }
     .devices-main .lead {
       color: rgba(255,255,255,.66);
       font-size: 17px;
@@ -561,7 +617,8 @@
       border: 1px solid rgba(255,255,255,.8);
     }
     .mini-card p { font-size: 15px; }
-    .mini-card--accent { background: var(--accent); color: #fff; }
+    .mini-card--accent { background: var(--accent-surface); color: #fff; }
+    .mini-card--accent p { color: rgba(255,255,255,.9); }
     .mini-stat { margin-top: 42px; font-size: 52px; font-weight: 880; letter-spacing: -.055em; }
 
     .tariff-lead {
@@ -577,7 +634,7 @@
       padding: 28px 32px;
       border-radius: var(--radius-lg);
       color: #fff;
-      background: var(--accent);
+      background: var(--accent-surface);
       box-shadow: var(--shadow);
     }
     .trial-strip__copy,
@@ -599,7 +656,7 @@
       font-weight: 900;
     }
     .trial-strip h3 { margin-bottom: 3px; font-size: 24px; }
-    .trial-strip p { margin: 0; color: rgba(255,255,255,.76); }
+    .trial-strip p { margin: 0; color: rgba(255,255,255,.9); }
     .trial-strip__price {
       white-space: nowrap;
       font-size: 44px;
@@ -785,18 +842,30 @@
     }
     .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
 
-    .mobile-toggle { display: none; }
-
     @media (max-width: 980px) {
       .nav-links { display: none; }
+      .mobile-toggle { display: grid; }
+      .mobile-menu {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        border-top: 1px solid transparent;
+        opacity: 0;
+        transition: max-height .25s ease, opacity .2s ease, border-color .2s ease;
+      }
+      .header.menu-open .mobile-menu {
+        max-height: 120px;
+        border-top-color: rgba(23,26,24,.06);
+        opacity: 1;
+      }
       .hero-card { min-height: 840px; }
       .hero-copy { max-width: 760px; }
       .device-stage { width: 470px; right: 50%; transform: translateX(50%); }
       .referral, .devices, .pricing-wrap { grid-template-columns: 1fr; }
       .cards-4 { grid-template-columns: repeat(2, 1fr); }
       .steps { grid-template-columns: 1fr; }
-      .step { min-height: 220px; }
-      .step-num { margin-bottom: 35px; }
+      .step { min-height: 200px; }
+      .step-num { margin-bottom: 28px; }
       .devices-side { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
       .trial-strip { grid-template-columns: 1fr; }
       .tariff-options { grid-template-columns: 1fr; }
@@ -807,12 +876,18 @@
     @media (max-width: 680px) {
       .section { padding: 24px 0; }
       .header { position: relative; }
+      .nav { gap: 9px; }
+      .brand { font-size: 20px; }
+      .brand-mark { width: 38px; height: 38px; }
+      .mobile-toggle { width: 44px; height: 44px; border-radius: 14px; }
+      .mobile-menu__inner { grid-template-columns: repeat(2, 1fr); }
+      .header.menu-open .mobile-menu { max-height: 170px; }
       .nav-actions .btn--ghost { display: none; }
       .nav-actions .btn--primary { min-height: 44px; padding: 0 14px; font-size: 0; }
       .nav-actions .btn--primary::after { content: "Начать"; font-size: 15px; }
       .hero { padding-top: 10px; }
       .hero-card { min-height: 0; padding: 28px 22px 20px; border-radius: 28px; }
-      h1 { font-size: 50px; }
+      h1 { font-size: 42px; }
       h2 { font-size: 38px; }
       .lead { font-size: 17px; }
       .hero-actions { display: grid; grid-template-columns: 1fr; }
@@ -824,7 +899,7 @@
         bottom: auto;
         width: 340px;
         max-width: 100%;
-        margin: 34px auto 0;
+        margin: 24px auto 0;
         transform: none;
       }
       .hero-device-image {
@@ -840,30 +915,112 @@
       .connection-ring { width: 82px; height: 82px; box-shadow: inset 0 0 0 9px #f7f7f3; }
       .connection-ring::after { width: 43px; height: 43px; }
       .app-title { font-size: 14px; }
-      .cards-4 { grid-template-columns: 1fr; }
-      .feature-card { min-height: 220px; }
-      .feature-icon { margin-bottom: 0; }
-      .feature-card h3 { min-height: 0; }
-      .feature-card p { min-height: 0; }
+      .cards-4 { grid-template-columns: 1fr; gap: 10px; }
+      .feature-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        min-height: 0;
+        padding: 20px;
+        column-gap: 16px;
+        row-gap: 6px;
+        border-radius: 22px;
+      }
+      .feature-icon {
+        grid-row: 1 / span 2;
+        width: 46px;
+        height: 46px;
+        margin: 0;
+        border-radius: 15px;
+      }
+      .feature-card h3 {
+        grid-column: 2;
+        min-height: 0;
+        margin: 0;
+        align-items: flex-start;
+      }
+      .feature-card p { grid-column: 2; min-height: 0; margin: 0; }
       .section-head--split { display: block; }
-      .referral-copy { padding: 34px 24px; }
+      .referral-copy { padding: 30px 24px; }
       .referral-title { font-size: clamp(28px, 8.8vw, 38px); }
-      .referral-visual { min-height: 420px; }
-      .earn-card { width: 86%; padding: 22px; }
+      .referral-list { margin: 20px 0 24px; }
+      .referral-visual { min-height: 360px; }
+      .earn-card { width: 84%; padding: 20px; }
       .earn-value { font-size: 38px; }
-      .link-card { right: 5%; bottom: 5%; width: 210px; }
-      .devices-main { padding: 30px 24px; }
-      .device-list { grid-template-columns: 1fr; }
-      .devices-side { grid-template-columns: 1fr; }
-      .trial-strip { padding: 24px; }
+      .chart { height: 108px; }
+      .link-card { right: 5%; bottom: 5%; width: 190px; }
+      .steps { gap: 10px; }
+      .step {
+        min-height: 0;
+        padding: 20px 20px 20px 76px;
+        border-radius: 22px;
+      }
+      .step > .step-num {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+      }
+      .step h3 { margin-bottom: 6px; }
+      .step p { max-width: none; margin-bottom: 0; }
+      .step-deco { right: -34px; bottom: -52px; width: 110px; height: 110px; }
+      .devices { gap: 10px; }
+      .devices-main { min-height: 0; padding: 26px 20px; }
+      .devices-title { max-width: 330px; font-size: 36px; }
+      .device-list { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 24px; }
+      .device-item { gap: 8px; padding: 12px 10px; border-radius: 15px; font-size: 14px; }
+      .devices-side { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .mini-card { min-width: 0; padding: 20px 16px; border-radius: 22px; }
+      .mini-card h3 { font-size: 20px; }
+      .mini-card p { font-size: 14px; }
+      .mini-stat { margin-top: 24px; font-size: 42px; }
+      .trial-strip { gap: 16px; padding: 20px; border-radius: 24px; }
       .trial-strip__copy { align-items: flex-start; }
-      .trial-strip__action { align-items: flex-start; flex-direction: column; }
-      .tariff-block { padding: 26px 20px; }
-      .tariff-block__head { align-items: flex-start; flex-direction: column; }
-      .tariff-option { min-height: 0; }
-      .lte-packages { grid-template-columns: 1fr; }
+      .trial-strip__action { align-items: center; justify-content: space-between; width: 100%; }
+      .trial-strip__price { font-size: 40px; }
+      .tariff-block { padding: 22px 16px; border-radius: 26px; }
+      .tariff-block__head { align-items: flex-start; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+      .tariff-block__head h3 { font-size: 30px; }
+      .tariff-block__head p { font-size: 15px; }
+      .tariff-options { gap: 10px; }
+      .tariff-option {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        min-height: 0;
+        padding: 18px;
+        column-gap: 10px;
+        align-items: center;
+        border-radius: 20px;
+      }
+      .tariff-badge { grid-column: 1 / -1; margin-bottom: 10px; }
+      .tariff-duration { grid-column: 1; margin: 0; font-size: 21px; }
+      .tariff-price { grid-column: 2; margin: 0; }
+      .tariff-price strong { font-size: 40px; }
+      .tariff-price span { font-size: 11px; }
+      .tariff-saving { grid-column: 1 / -1; margin: 10px 0 14px; font-size: 13px; }
+      .tariff-option .btn { grid-column: 1 / -1; min-height: 44px; }
+      .lte-packages { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .lte-package { min-height: 122px; padding: 16px; border-radius: 17px; }
+      .lte-package strong { margin: 6px 0 12px; font-size: 23px; }
+      .lte-package b { font-size: 20px; }
+      .faq-q { padding: 18px; font-size: 16px; }
+      .faq-a p { padding: 0 18px 18px; }
       .footer-row { align-items: flex-start; flex-direction: column; }
       .footer-links { gap: 12px 18px; }
+    }
+
+    @media (min-width: 1600px) {
+      :root { --container: 1360px; }
+      .hero-copy { max-width: 620px; }
+      .device-stage { width: min(38vw, 590px); }
+      .referral { grid-template-columns: 1fr 1fr; }
+      .cards-4 { gap: 18px; }
+    }
+
+    @media (min-width: 2200px) {
+      :root { --container: 1440px; }
+      .device-stage { width: 610px; }
     }
   </style>
 </head>
@@ -884,11 +1041,22 @@
         <a href="#referral">Заработок</a>
         <a href="#faq">Вопросы</a>
       </nav>
+      <button class="mobile-toggle" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="mobile-toggle__icon" aria-hidden="true"></span>
+      </button>
       <div class="nav-actions">
         <a class="btn btn--ghost" href="#tariff">Тариф</a>
         <a class="btn btn--primary" href="#tariff">Попробовать бесплатно</a>
       </div>
     </div>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильная навигация">
+      <div class="container mobile-menu__inner">
+        <a href="#benefits">Преимущества</a>
+        <a href="#connect">Подключение</a>
+        <a href="#referral">Заработок</a>
+        <a href="#faq">Вопросы</a>
+      </div>
+    </nav>
   </header>
 
   <main id="top">
@@ -1030,7 +1198,7 @@
         <div class="devices">
           <div class="devices-main">
             <span class="eyebrow" style="color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">Все основные устройства</span>
-            <h2 style="margin-top:22px">Одна подписка — для телефона и компьютера</h2>
+            <h2 class="devices-title" style="margin-top:22px">Одна подписка — для телефона и компьютера</h2>
             <p class="lead">Подключайте устройства, которыми пользуетесь каждый день.</p>
             <div class="device-list">
               <div class="device-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>iPhone</div>
@@ -1208,6 +1376,23 @@
   </footer>
 
   <script>
+    const header = document.querySelector('.header');
+    const mobileToggle = document.querySelector('.mobile-toggle');
+
+    mobileToggle.addEventListener('click', () => {
+      const isOpen = header.classList.toggle('menu-open');
+      mobileToggle.setAttribute('aria-expanded', String(isOpen));
+      mobileToggle.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
+    });
+
+    document.querySelectorAll('.mobile-menu a').forEach((link) => {
+      link.addEventListener('click', () => {
+        header.classList.remove('menu-open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        mobileToggle.setAttribute('aria-label', 'Открыть меню');
+      });
+    });
+
     document.querySelectorAll('.faq-q').forEach((button) => {
       button.addEventListener('click', () => {
         const item = button.closest('.faq-item');
